@@ -1,10 +1,18 @@
 <script>
+import { mapGetters } from "vuex";
+
 export default {
     name: "BarraAplicacion",
     emits: ["abrirCerrarMenuNavegacion"],
+    computed: {
+        ...mapGetters("autenticacion", ["usuarioAutenticado"]),
+    },
     methods: {
         abrirCerrarMenuNavegacion() {
             this.$emit("abrirCerrarMenuNavegacion");
+        },
+        cerrarSesion() {
+            this.$store.dispatch("autenticacion/logout");
         },
     },
 };
@@ -19,14 +27,14 @@ export default {
             :width="36"
             aspect-ratio="1/1"
             alt="Logo"
-            src="./../assets/imagenes/logo.png"
+            src="@/assets/imagenes/logo.png"
         />
 
         <v-app-bar-title>MIGRACIÓN NETSUITE</v-app-bar-title>
 
         <v-spacer />
 
-        <v-menu location="bottom">
+        <v-menu v-if="usuarioAutenticado" location="bottom">
             <template #activator="{ props }">
                 <v-btn v-bind="props" icon>
                     <v-avatar size="32" color="primary">
@@ -37,7 +45,13 @@ export default {
 
             <v-list>
                 <v-list-item>
-                    <v-list-item-title> usuario@email.com </v-list-item-title>
+                    <v-list-item-title>
+                        {{ usuarioAutenticado.correo_electronico }}
+                    </v-list-item-title>
+
+                    <v-list-item-subtitle>
+                        {{ usuarioAutenticado.rol.toUpperCase() }}
+                    </v-list-item-subtitle>
                 </v-list-item>
 
                 <v-divider />
@@ -48,7 +62,7 @@ export default {
 
                 <v-divider />
 
-                <v-list-item link>
+                <v-list-item link @click="cerrarSesion">
                     <v-list-item-title>Cerrar sesión</v-list-item-title>
                 </v-list-item>
             </v-list>
