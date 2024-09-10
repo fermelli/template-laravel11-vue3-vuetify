@@ -1,13 +1,20 @@
 <script>
+import AppLayout from "./layouts/AppLayout.vue";
+import { LAYOUTS } from "./utils/constantes";
+
 export default {
     name: "App",
+    components: { AppLayout },
+    data() {
+        return {
+            layouts: LAYOUTS,
+        };
+    },
 };
 </script>
 
 <template>
-    <div>
-        <h1>App</h1>
-
-        <router-view />
-    </div>
+    <v-app>
+        <AppLayout />
+    </v-app>
 </template>
