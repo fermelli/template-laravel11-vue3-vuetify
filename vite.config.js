@@ -3,7 +3,7 @@ import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
 import eslint from "vite-plugin-eslint";
-import Vuetify from "vite-plugin-vuetify";
+import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 export default defineConfig({
     plugins: [
@@ -13,10 +13,7 @@ export default defineConfig({
         }),
         vue({
             template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
-                },
+                transformAssetUrls,
             },
         }),
         Vuetify(),
