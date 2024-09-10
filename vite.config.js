@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
+import eslint from "vite-plugin-eslint";
 
 export default defineConfig({
     plugins: [
@@ -16,6 +17,10 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
+        }),
+        eslint({
+            cache: true,
+            failOnWarning: true,
         }),
     ],
     resolve: {
