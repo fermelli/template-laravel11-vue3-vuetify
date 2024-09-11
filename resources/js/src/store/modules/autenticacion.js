@@ -19,9 +19,9 @@ const autenticacionStore = {
                 const { data } =
                     await AutenticacionService.usuarioAutenticado();
 
-                commit("setUsuario", data);
+                commit("setUsuario", data?.datos);
 
-                return data;
+                return data?.datos;
             } catch (error) {
                 commit("setUsuario", null);
             }

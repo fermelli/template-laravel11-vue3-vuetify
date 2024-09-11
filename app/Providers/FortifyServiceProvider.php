@@ -7,11 +7,11 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Fortify;
@@ -26,11 +26,9 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
             public function toResponse($request)
             {
-                if ($request->wantsJson()) {
-                    return response()->json(['mensaje' => 'Sesión cerrada.']);
-                }
-                
-                return redirect('/');
+                return $request->wantsJson()
+                    ? response()->jsonResponse('Usuario desautenticado.', null, 200)
+                    : redirect()->intended('/');
             }
         });
 
@@ -38,10 +36,17 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 return $request->wantsJson()
-                    ? new JsonResponse([
-                        'mensaje' => 'Usuario registrado.',
-                    ], 201)
-                    : redirect()->intended(Fortify::redirects('register'));
+                    ? response()->jsonResponse('Usuario registrado.', null, 201)
+                    : redirect()->intended('/');
+            }
+        });
+
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            public function toResponse($request)
+            {
+                return $request->wantsJson()
+                    ? response()->jsonResponse('Usuario autenticado.', $request->user(), 200)
+                    : redirect()->intended('/');
             }
         });
     }
