@@ -1,5 +1,5 @@
 <script>
-import rutasMenuNavegacion from "./../router/rutas-menu-navegacion";
+import { mapGetters } from "vuex";
 
 export default {
     name: "MenuNavegacion",
@@ -12,8 +12,10 @@ export default {
     data() {
         return {
             abierto: this.abiertoNavegacion,
-            rutas: rutasMenuNavegacion,
         };
+    },
+    computed: {
+        ...mapGetters("rutasMenuNavegacion", ["rutasPermitidasPorRol"]),
     },
     watch: {
         abiertoNavegacion(valor) {
@@ -30,7 +32,10 @@ export default {
 
             <v-divider />
 
-            <template v-for="(ruta, indice) in rutas" :key="indice">
+            <template
+                v-for="(ruta, indice) in rutasPermitidasPorRol"
+                :key="indice"
+            >
                 <v-list-group v-if="'rutasHijas' in ruta" :value="ruta.texto">
                     <template #activator="{ props }">
                         <v-list-item
