@@ -1,4 +1,4 @@
-import AutenticacionService from "../../services/autenticacion";
+import AutenticacionService from "../../services/autenticacion.service";
 import router from "@/router";
 
 const autenticacionStore = {

@@ -1,5 +1,5 @@
 <script>
-import AutenticacionService from "@/services/autenticacion";
+import AutenticacionService from "@/services/autenticacion.service";
 
 export default {
     name: "LoginVista",
