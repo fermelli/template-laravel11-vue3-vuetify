@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         Usuario::factory()->create([
             'nombre' => 'fermelli',
-            'correo_electronico' => 'luis.salgado@esam.edu.bo',
+            'correo_electronico' => 'luisfernandosalgadomiguez@gmail.com',
             'password' => Hash::make('Password123$'),
             'rol' => Usuario::ROL_ADMINISTRADOR,
         ]);
