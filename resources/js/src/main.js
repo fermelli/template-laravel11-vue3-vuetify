@@ -6,6 +6,7 @@ import store from "./store";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import { VUE_TOASTIFICATION_OPTIONS } from "./utils/constantes";
+import "./assets/css/main.css";
 
 const app = createApp(App);
 

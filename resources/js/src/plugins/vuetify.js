@@ -4,6 +4,8 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { es } from "vuetify/locale";
+import temaClaro from "./tema-claro";
+import temaOscuro from "./tema-oscuro";
 
 const vuetify = createVuetify({
     components,
@@ -17,6 +19,13 @@ const vuetify = createVuetify({
     },
     display: {
         mobileBreakpoint: "md",
+    },
+    theme: {
+        defaultTheme: "temaClaro",
+        themes: {
+            temaClaro,
+            temaOscuro,
+        },
     },
 });
 
