@@ -1,5 +1,6 @@
 <script>
 import AutenticacionService from "@/services/autenticacion.service";
+import { correoElectronico, requerido } from "../../utils/validaciones";
 
 export default {
     name: "LoginVista",
@@ -13,12 +14,8 @@ export default {
                 password: "",
             },
             reglasValidacion: {
-                requerido: (valor) => !!valor || "Campo requerido.",
-                correoElectronico: (valor) => {
-                    let regex =
-                        /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-                    return regex.test(valor) || "Correo electrónico inválido.";
-                },
+                requerido,
+                correoElectronico,
             },
         };
     },

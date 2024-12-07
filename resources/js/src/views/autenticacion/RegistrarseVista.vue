@@ -1,5 +1,11 @@
 <script>
 import AutenticacionService from "@/services/autenticacion.service";
+import {
+    confirmarPassword,
+    correoElectronico,
+    requerido,
+    password,
+} from "../../utils/validaciones";
 
 export default {
     name: "RegistrarseVista",
@@ -15,18 +21,11 @@ export default {
                 password_confirmation: "",
             },
             reglasValidacion: {
-                requerido: (valor) => !!valor || "Campo requerido.",
-                correoElectronico: (valor) => {
-                    let regex =
-                        /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-                    return regex.test(valor) || "Correo electrónico inválido.";
-                },
-                password: (valor) =>
-                    (valor && valor.length >= 8) ||
-                    "El password debe tener al menos 8 caracteres",
+                requerido,
+                correoElectronico,
+                password,
                 confirmarPassword: (valor) =>
-                    valor === this.formulario.password ||
-                    "Las contraseñas no coinciden.",
+                    confirmarPassword(valor, this.formulario.password),
             },
         };
     },
