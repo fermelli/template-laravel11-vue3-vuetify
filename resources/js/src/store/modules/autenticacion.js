@@ -26,18 +26,21 @@ const autenticacionStore = {
                 commit("setUsuario", null);
             }
         },
-        async logout({ commit }) {
+        async logout({ dispatch }) {
             return AutenticacionService.logout()
                 .then(() => {
-                    commit("setUsuario", null);
-
-                    if (router.currentRoute.name !== "login") {
-                        router.push({ name: "login" });
-                    }
+                    dispatch("localLogout");
                 })
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+        localLogout({ commit }) {
+            commit("setUsuario", null);
+
+            if (router.currentRoute.name !== "login") {
+                router.push({ name: "login" });
+            }
         },
     },
     getters: {

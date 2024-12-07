@@ -65,7 +65,7 @@ service.interceptors.response.use(
             ].includes(error.response.status)
         ) {
             if (store.getters["autenticacion/usuarioAutenticado"]) {
-                store.dispatch("autenticacion/logout");
+                store.dispatch("autenticacion/localLogout");
             }
 
             toast.error(
