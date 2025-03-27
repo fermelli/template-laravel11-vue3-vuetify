@@ -43,7 +43,9 @@ function cambiarTema() {
             src="@/assets/imagenes/logo.png"
         />
 
-        <v-app-bar-title>MIGRACIÓN NETSUITE</v-app-bar-title>
+        <v-app-bar-title>
+            Template Laravel 11 + Vue 3 + Vuetify 3
+        </v-app-bar-title>
 
         <v-spacer />
 
