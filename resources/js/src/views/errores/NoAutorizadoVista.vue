@@ -1,12 +1,12 @@
-<script>
-import { mapGetters } from "vuex";
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
 
-export default {
-    name: "NoEncontradoVista",
-    computed: {
-        ...mapGetters("autenticacion", ["usuarioAutenticado"]),
-    },
-};
+const store = useStore();
+
+const usuarioAutenticado = computed(() => {
+    return store.getters["autenticacion/usuarioAutenticado"];
+});
 </script>
 
 <template>

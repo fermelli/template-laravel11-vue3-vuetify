@@ -1,8 +1,4 @@
-<script>
-export default {
-    name: "InicioVista",
-};
-</script>
+<script setup></script>
 
 <template>
     <h2>Inicio</h2>

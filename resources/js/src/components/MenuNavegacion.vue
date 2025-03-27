@@ -1,28 +1,28 @@
-<script>
-import { mapGetters } from "vuex";
+<script setup>
+import { computed, ref, watch } from "vue";
+import { useStore } from "vuex";
 
-export default {
-    name: "MenuNavegacion",
-    props: {
-        abiertoNavegacion: {
-            type: Boolean,
-            default: false,
-        },
+const store = useStore();
+
+const props = defineProps({
+    abiertoNavegacion: {
+        type: Boolean,
+        default: false,
     },
-    data() {
-        return {
-            abierto: this.abiertoNavegacion,
-        };
+});
+
+const rutasPermitidasPorRol = computed(
+    () => store.getters["rutasMenuNavegacion/rutasPermitidasPorRol"],
+);
+
+const abierto = ref(props.abiertoNavegacion);
+
+watch(
+    () => props.abiertoNavegacion,
+    (valor) => {
+        abierto.value = valor;
     },
-    computed: {
-        ...mapGetters("rutasMenuNavegacion", ["rutasPermitidasPorRol"]),
-    },
-    watch: {
-        abiertoNavegacion(valor) {
-            this.abierto = valor;
-        },
-    },
-};
+);
 </script>
 
 <template>
@@ -37,9 +37,9 @@ export default {
                 :key="indice"
             >
                 <v-list-group v-if="'rutasHijas' in ruta" :value="ruta.texto">
-                    <template #activator="{ props }">
+                    <template #activator="{ props: bindProps }">
                         <v-list-item
-                            v-bind="props"
+                            v-bind="bindProps"
                             density="compact"
                             :prepend-icon="ruta.icono"
                             :title="ruta.texto"

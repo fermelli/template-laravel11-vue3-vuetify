@@ -1,4 +1,6 @@
-<script>
+<script setup>
+import { useRouter } from "vue-router";
+import { reactive, ref } from "vue";
 import AutenticacionService from "@/services/autenticacion.service";
 import {
     confirmarPassword,
@@ -7,48 +9,41 @@ import {
     password,
 } from "../../utils/validaciones";
 
-export default {
-    name: "RegistrarseVista",
-    data() {
-        return {
-            formularioValido: false,
-            enviandoFormulario: false,
-            passwordMostrado: false,
-            formulario: {
-                nombre: "",
-                correo_electronico: "",
-                password: "",
-                password_confirmation: "",
-            },
-            reglasValidacion: {
-                requerido,
-                correoElectronico,
-                password,
-                confirmarPassword: (valor) =>
-                    confirmarPassword(valor, this.formulario.password),
-            },
-        };
-    },
-    methods: {
-        async registrarUsuario() {
-            if (!this.formularioValido) {
-                return;
-            }
+const router = useRouter();
 
-            this.enviandoFormulario = true;
-
-            try {
-                await AutenticacionService.register(this.formulario);
-
-                this.$router.push({ name: "inicio" });
-            } catch (error) {
-                console.log(error);
-            } finally {
-                this.enviandoFormulario = false;
-            }
-        },
-    },
+const formularioValido = ref(false);
+const enviandoFormulario = ref(false);
+const passwordMostrado = ref(false);
+const formulario = reactive({
+    nombre: "",
+    correo_electronico: "",
+    password: "",
+    password_confirmation: "",
+});
+const reglasValidacion = {
+    requerido,
+    correoElectronico,
+    password,
+    confirmarPassword: (valor) => confirmarPassword(valor, formulario.password),
 };
+
+async function registrarUsuario() {
+    if (!formularioValido.value) {
+        return;
+    }
+
+    enviandoFormulario.value = true;
+
+    try {
+        await AutenticacionService.register(formulario);
+
+        router.push({ name: "inicio" });
+    } catch (error) {
+        console.log(error);
+    } finally {
+        enviandoFormulario.value = false;
+    }
+}
 </script>
 
 <template>

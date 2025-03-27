@@ -1,8 +1,4 @@
-<script>
-export default {
-    name: "NoEncontradoVista",
-};
-</script>
+<script setup></script>
 
 <template>
     <v-responsive class="fill-height">

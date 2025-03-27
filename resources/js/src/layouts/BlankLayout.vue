@@ -1,8 +1,4 @@
-<script>
-export default {
-    name: "BlankLayout",
-};
-</script>
+<script setup></script>
 
 <template>
     <v-layout>

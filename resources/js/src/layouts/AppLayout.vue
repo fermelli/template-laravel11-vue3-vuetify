@@ -1,16 +1,9 @@
-<script>
+<script setup>
 import BarraAplicacion from "@/components/BarraAplicacion.vue";
 import MenuNavegacion from "@/components/MenuNavegacion.vue";
+import { ref } from "vue";
 
-export default {
-    name: "AppLayout",
-    components: { BarraAplicacion, MenuNavegacion },
-    data() {
-        return {
-            abiertoNavegacion: false,
-        };
-    },
-};
+const abiertoNavegacion = ref(false);
 </script>
 
 <template>

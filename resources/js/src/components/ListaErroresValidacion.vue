@@ -1,13 +1,10 @@
-<script>
-export default {
-    name: "ListaErroresValidacion",
-    props: {
-        errores: {
-            type: Array,
-            required: true,
-        },
+<script setup>
+defineProps({
+    errores: {
+        type: Array,
+        required: true,
     },
-};
+});
 </script>
 
 <template>

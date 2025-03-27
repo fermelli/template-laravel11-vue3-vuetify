@@ -1,38 +1,34 @@
-<script>
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
 import { useTheme } from "vuetify";
-import { mapGetters } from "vuex";
 
-export default {
-    name: "BarraAplicacion",
-    emits: ["abrirCerrarMenuNavegacion"],
-    setup() {
-        const theme = useTheme();
+const store = useStore();
+const theme = useTheme();
 
-        return {
-            theme,
-        };
-    },
-    computed: {
-        ...mapGetters("autenticacion", ["usuarioAutenticado"]),
-    },
-    methods: {
-        abrirCerrarMenuNavegacion() {
-            this.$emit("abrirCerrarMenuNavegacion");
-        },
-        cerrarSesion() {
-            this.$store.dispatch("autenticacion/logout");
-        },
-        cambiarTema() {
-            const temaActual = this.theme.global.current.value.dark
-                ? "temaClaro"
-                : "temaOscuro";
+const emit = defineEmits(["abrirCerrarMenuNavegacion"]);
 
-            localStorage.setItem("tema-actual", temaActual);
+const usuarioAutenticado = computed(() => {
+    return store.getters["autenticacion/usuarioAutenticado"];
+});
 
-            this.theme.global.name.value = temaActual;
-        },
-    },
-};
+function abrirCerrarMenuNavegacion() {
+    emit("abrirCerrarMenuNavegacion");
+}
+
+function cerrarSesion() {
+    store.dispatch("autenticacion/logout");
+}
+
+function cambiarTema() {
+    const temaActual = theme.global.current.value.dark
+        ? "temaClaro"
+        : "temaOscuro";
+
+    localStorage.setItem("tema-actual", temaActual);
+
+    theme.global.name.value = temaActual;
+}
 </script>
 
 <template>

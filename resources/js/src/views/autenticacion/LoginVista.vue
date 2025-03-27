@@ -1,50 +1,48 @@
-<script>
+<script setup>
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { reactive, ref } from "vue";
 import AutenticacionService from "@/services/autenticacion.service";
 import { correoElectronico, requerido } from "../../utils/validaciones";
 
-export default {
-    name: "LoginVista",
-    data() {
-        return {
-            formularioValido: false,
-            enviandoFormulario: false,
-            passwordMostrado: false,
-            formulario: {
-                correo_electronico: "",
-                password: "",
-            },
-            reglasValidacion: {
-                requerido,
-                correoElectronico,
-            },
-        };
-    },
-    methods: {
-        async loguearUsuario() {
-            if (!this.formularioValido) {
-                return;
-            }
+const store = useStore();
+const router = useRouter();
 
-            this.enviandoFormulario = true;
-
-            try {
-                await AutenticacionService.login(this.formulario);
-
-                const usuarioAutenticado = await this.$store.dispatch(
-                    "autenticacion/obtenerUsuarioAutenticado",
-                );
-
-                if (usuarioAutenticado) {
-                    this.$router.push({ name: "inicio" });
-                }
-            } catch (error) {
-                console.log(error);
-            } finally {
-                this.enviandoFormulario = false;
-            }
-        },
-    },
+const formularioValido = ref(false);
+const enviandoFormulario = ref(false);
+const passwordMostrado = ref(false);
+const formulario = reactive({
+    correo_electronico: "",
+    password: "",
+});
+const reglasValidacion = {
+    requerido,
+    correoElectronico,
 };
+
+async function loguearUsuario() {
+    if (!formularioValido.value) {
+        return;
+    }
+
+    enviandoFormulario.value = true;
+
+    try {
+        await AutenticacionService.login(formulario);
+
+        const usuarioAutenticado = await store.dispatch(
+            "autenticacion/obtenerUsuarioAutenticado",
+        );
+
+        if (usuarioAutenticado) {
+            router.push({ name: "inicio" });
+        }
+    } catch (error) {
+        console.log(error);
+    } finally {
+        enviandoFormulario.value = false;
+    }
+}
 </script>
 
 <template>
