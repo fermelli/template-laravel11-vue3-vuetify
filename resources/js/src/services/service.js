@@ -75,10 +75,13 @@ service.interceptors.response.use(
             error.response &&
             error.response.status === HttpStatusCode.UnprocessableEntity
         ) {
-            const { data } = error.response;
+            const response = error?.response;
+            const data = response?.data;
+            const errors = data?.errors;
+            const message = data?.message;
 
-            if (data.errores && Object.keys(data.errores).length > 0) {
-                const errores = Object.values(data.errores).flat();
+            if (data?.errors && Object.keys(errors).length > 0) {
+                const errores = Object.values(errors).flat();
 
                 toast.error({
                     component: ListaErroresValidacion,
@@ -87,7 +90,7 @@ service.interceptors.response.use(
                     },
                 });
             } else {
-                toast.error(data.message);
+                toast.error(message);
             }
         } else if (
             error.response &&
