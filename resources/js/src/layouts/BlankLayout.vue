@@ -9,7 +9,9 @@
         </v-main>
 
         <v-footer app>
-            <span class="d-inline-block mx-auto"> &copy; 2024 - SUCRE </span>
+            <span class="d-inline-block mx-auto">
+                &copy; {{ new Date().getFullYear() }} - SUCRE
+            </span>
         </v-footer>
     </v-layout>
 </template>
