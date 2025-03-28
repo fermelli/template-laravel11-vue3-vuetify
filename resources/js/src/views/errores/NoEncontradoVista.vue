@@ -9,15 +9,18 @@
 
             <v-card-text>
                 <v-img
-                    width="600"
+                    height="100%"
                     src="@/assets/imagenes/no-encontrado.svg"
                     class="mx-auto"
-                    aspect-ratio="1"
+                    cover
                 />
 
-                <p>
-                    La página que estás buscando no existe o no tienes permisos
-                    para acceder a ella.
+                <p class="text-center mt-5">
+                    La página que estás buscando no existe o no tienes para
+                    acceder a ella.
+                </p>
+
+                <p class="text-center mt-5">
                     <router-link
                         class="d-inline-block"
                         :to="{ name: 'inicio' }"

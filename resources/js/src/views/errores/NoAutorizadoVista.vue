@@ -18,14 +18,17 @@ const usuarioAutenticado = computed(() => {
 
             <v-card-text>
                 <v-img
-                    width="600"
+                    height="100%"
                     src="@/assets/imagenes/no-autorizado.svg"
                     class="mx-auto"
-                    aspect-ratio="1"
+                    cover
                 />
 
-                <p>
+                <p class="text-center mt-5">
                     No tienes permisos para acceder a esta página.
+                </p>
+
+                <p class="text-center mt-5">
                     <router-link
                         class="d-inline-block"
                         :to="{ name: 'inicio' }"
