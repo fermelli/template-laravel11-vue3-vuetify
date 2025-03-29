@@ -1,32 +1,29 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 
-const props = defineProps({
-    abiertoNavegacion: {
+defineProps({
+    modelValue: {
         type: Boolean,
-        default: false,
+        required: true,
     },
 });
+
+const emit = defineEmits(["update:modelValue"]);
 
 const rutasPermitidasPorRol = computed(
     () => store.getters["rutasMenuNavegacion/rutasPermitidasPorRol"],
 );
-
-const abierto = ref(props.abiertoNavegacion);
-
-watch(
-    () => props.abiertoNavegacion,
-    (valor) => {
-        abierto.value = valor;
-    },
-);
 </script>
 
 <template>
-    <v-navigation-drawer v-model="abierto" location="left">
+    <v-navigation-drawer
+        :model-value="modelValue"
+        location="left"
+        @update:model-value="emit('update:modelValue', $event)"
+    >
         <v-list open-strategy="multiple">
             <v-list-subheader>Menú Principal</v-list-subheader>
 

@@ -14,7 +14,7 @@ const abiertoNavegacion = ref(false);
             "
         />
 
-        <MenuNavegacion :abierto-navegacion="abiertoNavegacion" />
+        <MenuNavegacion v-model="abiertoNavegacion" />
 
         <v-main scrollable>
             <v-container fluid>
