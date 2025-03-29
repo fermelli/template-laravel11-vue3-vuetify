@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/usuario-autenticado', function (Request $request) {
-        return response()->jsonResponse('Datos del usuario autenticado.', $request->user(), 200);
-    });
+    Route::get('/usuario-autenticado', [UsuarioController::class, 'autenticado'])
+        ->name('usuario-autenticado');
 });
