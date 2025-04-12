@@ -18,7 +18,7 @@
         });
     </script>
 
-    @vite('resources/js/src/main.js ')
+    @vite('resources/js/src/main.ts ')
 
     <style>
         *,

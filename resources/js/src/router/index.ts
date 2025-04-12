@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import routes from "./routes";
 import store from "@/store";
 
-const router = new createRouter({
+const router = createRouter({
     history: createWebHistory(),
     routes,
 });
@@ -38,18 +38,24 @@ router.beforeEach(async (to, from, next) => {
             if (esRutaLogin) {
                 next(rutaInicio);
             } else {
-                !to.meta?.rolesAutorizados?.includes(usuarioAutenticado.rol)
-                    ? next(rutaNoAutorizado)
-                    : next();
+                if (
+                    !to.meta?.rolesAutorizados?.includes(usuarioAutenticado.rol)
+                ) {
+                    next(rutaNoAutorizado);
+                } else {
+                    next();
+                }
             }
         }
     } else {
         if (esRutaLogin || esRutaNoAutorizado || esRutaRegistrarse) {
             await store.dispatch("autenticacion/obtenerUsuarioAutenticado");
 
-            store.getters["autenticacion/usuarioAutenticado"]
-                ? next(rutaInicio)
-                : next();
+            if (store.getters["autenticacion/usuarioAutenticado"]) {
+                next(rutaInicio);
+            } else {
+                next();
+            }
         } else {
             next();
         }

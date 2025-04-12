@@ -22,6 +22,7 @@ const autenticacionStore = {
                 commit("setUsuario", data?.datos);
 
                 return data?.datos;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
                 commit("setUsuario", null);
             }
@@ -38,7 +39,7 @@ const autenticacionStore = {
         localLogout({ commit }) {
             commit("setUsuario", null);
 
-            if (router.currentRoute.name !== "login") {
+            if (router.currentRoute.value.name !== "login") {
                 router.push({ name: "login" });
             }
         },

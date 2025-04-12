@@ -1,0 +1,21 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.json",
+    "include": [
+        "resources/**/*.ts",
+        "resources/**/*.d.ts",
+        "resources/**/*.vue"
+    ],
+    "compilerOptions": {
+        "allowJs": false,
+        "strict": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/js/src/*"]
+        },
+        "types": ["vite/client"],
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
+    }
+}

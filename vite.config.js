@@ -8,7 +8,7 @@ import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 export default defineConfig({
     plugins: [
         laravel({
-            input: ["resources/js/src/main.js"],
+            input: ["resources/js/src/main.ts"],
             refresh: true,
         }),
         vue({

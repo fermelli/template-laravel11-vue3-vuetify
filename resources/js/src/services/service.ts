@@ -36,7 +36,11 @@ service.interceptors.response.use(
             mensajeAlternativo = "Petición aceptada.";
         }
 
-        mensaje ? toast.success(mensaje) : toast.success(mensajeAlternativo);
+        if (mensaje) {
+            toast.success(mensaje);
+        } else {
+            toast.success(mensajeAlternativo);
+        }
 
         return response;
     },
