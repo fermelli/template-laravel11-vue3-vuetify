@@ -9,6 +9,7 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
@@ -27,7 +28,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 return $request->wantsJson()
-                    ? response()->jsonResponse('Usuario desautenticado.', null, 200)
+                    ? Response::jsonResponse('Usuario desautenticado.', null, 200)
                     : redirect()->intended('/');
             }
         });
@@ -36,7 +37,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 return $request->wantsJson()
-                    ? response()->jsonResponse('Usuario registrado.', null, 201)
+                    ? Response::jsonResponse('Usuario registrado.', null, 201)
                     : redirect()->intended('/');
             }
         });
@@ -45,7 +46,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 return $request->wantsJson()
-                    ? response()->jsonResponse('Usuario autenticado.', $request->user(), 200)
+                    ? Response::jsonResponse('Usuario autenticado.', $request->user(), 200)
                     : redirect()->intended('/');
             }
         });
