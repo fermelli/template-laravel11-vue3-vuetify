@@ -1,17 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 
-defineProps({
-    modelValue: {
-        type: Boolean,
-        required: true,
-    },
-});
+defineProps<{
+    modelValue: boolean;
+}>();
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits<{
+    (e: "update:modelValue", value: boolean): void;
+}>();
 
 const rutasPermitidasPorRol = computed(
     () => store.getters["rutasMenuNavegacion/rutasPermitidasPorRol"],

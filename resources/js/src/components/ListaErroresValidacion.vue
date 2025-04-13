@@ -1,10 +1,7 @@
-<script setup>
-defineProps({
-    errores: {
-        type: Array,
-        required: true,
-    },
-});
+<script setup lang="ts">
+defineProps<{
+    errores: string[];
+}>();
 </script>
 
 <template>

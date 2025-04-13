@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
 import AutenticacionService from "@/services/autenticacion.service";
@@ -8,13 +8,14 @@ import {
     requerido,
     password,
 } from "../../utils/validaciones";
+import type { Registro } from "@/types/usuario";
 
 const router = useRouter();
 
 const formularioValido = ref(false);
 const enviandoFormulario = ref(false);
 const passwordMostrado = ref(false);
-const formulario = reactive({
+const formulario: Registro = reactive({
     nombre: "",
     correo_electronico: "",
     password: "",
@@ -24,7 +25,7 @@ const reglasValidacion = {
     requerido,
     correoElectronico,
     password,
-    confirmarPassword: (valor) => confirmarPassword(valor, formulario.password),
+    confirmarPassword,
 };
 
 async function registrarUsuario() {
@@ -119,7 +120,9 @@ async function registrarUsuario() {
                             :type="passwordMostrado ? 'text' : 'password'"
                             :rules="[
                                 reglasValidacion.requerido,
-                                reglasValidacion.confirmarPassword,
+                                reglasValidacion.confirmarPassword(
+                                    formulario.password,
+                                ),
                             ]"
                             clearable
                             @click:append-inner="

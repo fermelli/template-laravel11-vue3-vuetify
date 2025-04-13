@@ -1,14 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useTheme } from "vuetify";
+import type { Usuario } from "@/types/usuario";
 
 const store = useStore();
 const theme = useTheme();
 
-const emit = defineEmits(["abrirCerrarMenuNavegacion"]);
+const emit = defineEmits<{
+    (e: "abrirCerrarMenuNavegacion"): void;
+}>();
 
-const usuarioAutenticado = computed(() => {
+const usuarioAutenticado = computed<Usuario>(() => {
     return store.getters["autenticacion/usuarioAutenticado"];
 });
 

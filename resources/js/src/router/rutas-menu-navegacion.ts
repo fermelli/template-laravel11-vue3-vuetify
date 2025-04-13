@@ -1,10 +1,10 @@
-import { ROLES } from "../utils/constantes";
+import type { RutaMenuNavegacion } from "@/types/application";
 
 export default [
     {
         to: { name: "inicio" },
         icono: "mdi-home",
         texto: "Inicio",
-        rolesAutorizados: [ROLES.administrador, ROLES.usuario],
+        rolesAutorizados: ["administrador", "usuario"],
     },
-];
+] as RutaMenuNavegacion[];

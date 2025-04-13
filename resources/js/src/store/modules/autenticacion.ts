@@ -1,23 +1,29 @@
+import type { Usuario } from "@/types/usuario";
 import AutenticacionService from "../../services/autenticacion.service";
 import router from "@/router";
 
+export interface AutenticacionState {
+    usuario: Usuario | null;
+}
+
 const autenticacionStore = {
     namespaced: true,
-    state() {
+    state(): AutenticacionState {
         return {
             usuario: null,
         };
     },
     mutations: {
-        setUsuario(state, usuario) {
+        setUsuario(state, usuario: Usuario | null) {
             state.usuario = usuario;
         },
     },
     actions: {
         async obtenerUsuarioAutenticado({ commit }) {
             try {
-                const { data } =
+                const response =
                     await AutenticacionService.usuarioAutenticado();
+                const data = response.data;
 
                 commit("setUsuario", data?.datos);
 

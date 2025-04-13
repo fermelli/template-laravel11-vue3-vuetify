@@ -1,6 +1,11 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+    createRouter,
+    createWebHistory,
+    type RouteLocationRaw,
+} from "vue-router";
 import routes from "./routes";
 import store from "@/store";
+import type { Usuario } from "@/types/usuario";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -16,12 +21,12 @@ router.afterEach(() => {
 });
 
 router.beforeEach(async (to, from, next) => {
-    const requiresAuth = to.matched.some((record) => record.meta?.requiresAuth);
-    const usuarioAutenticado =
+    const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+    const usuarioAutenticado: Usuario =
         store.getters["autenticacion/usuarioAutenticado"];
-    const rutaLogin = { name: "login", redirect: to.fullPath };
-    const rutaInicio = { name: "inicio", redirect: to.fullPath };
-    const rutaNoAutorizado = { name: "no-autorizado", redirect: to.fullPath };
+    const rutaLogin: RouteLocationRaw = { name: "login" };
+    const rutaInicio: RouteLocationRaw = { name: "inicio" };
+    const rutaNoAutorizado: RouteLocationRaw = { name: "no-autorizado" };
     const esRutaLogin = to.name === "login";
     const esRutaRegistrarse = to.name === "registrarse";
     const esRutaNoAutorizado = to.name === "no-autorizado";
@@ -29,7 +34,7 @@ router.beforeEach(async (to, from, next) => {
     if (requiresAuth && !usuarioAutenticado) {
         await store.dispatch("autenticacion/obtenerUsuarioAutenticado");
 
-        const usuarioAutenticado =
+        const usuarioAutenticado: Usuario =
             store.getters["autenticacion/usuarioAutenticado"];
 
         if (!usuarioAutenticado) {

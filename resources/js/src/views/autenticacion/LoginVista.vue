@@ -1,9 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
 import AutenticacionService from "@/services/autenticacion.service";
 import { correoElectronico, requerido } from "../../utils/validaciones";
+import type { Credentiales, Usuario } from "@/types/usuario";
 
 const store = useStore();
 const router = useRouter();
@@ -11,7 +12,7 @@ const router = useRouter();
 const formularioValido = ref(false);
 const enviandoFormulario = ref(false);
 const passwordMostrado = ref(false);
-const formulario = reactive({
+const formulario: Credentiales = reactive({
     correo_electronico: "",
     password: "",
 });
@@ -30,7 +31,7 @@ async function loguearUsuario() {
     try {
         await AutenticacionService.login(formulario);
 
-        const usuarioAutenticado = await store.dispatch(
+        const usuarioAutenticado: Usuario = await store.dispatch(
             "autenticacion/obtenerUsuarioAutenticado",
         );
 

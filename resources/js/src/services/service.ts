@@ -1,13 +1,13 @@
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode, type AxiosResponse } from "axios";
 import { useToast } from "vue-toastification";
 import store from "@/store";
 import router from "@/router";
 import ListaErroresValidacion from "@/components/ListaErroresValidacion.vue";
+import type { Rol, Usuario } from "@/types/usuario";
 import {
-    CODIGO_ERRORES,
-    CODIGOS_ESTADO_HTTP_ADICIONALES,
-    ROLES,
-} from "../utils/constantes";
+    AdditionalHttpStatusCodes,
+    type ApiResponse,
+} from "@/types/api-response";
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -21,7 +21,7 @@ const service = axios.create({
 });
 
 service.interceptors.response.use(
-    (response) => {
+    (response: AxiosResponse<ApiResponse<unknown>>) => {
         const toast = useToast();
         const mensaje = response.data?.mensaje;
         let mensajeAlternativo = "Petición realizada";
@@ -44,20 +44,20 @@ service.interceptors.response.use(
 
         return response;
     },
-    (error) => {
+    (error: AxiosError<ApiResponse<unknown>>) => {
         const toast = useToast();
 
-        if (error.code === CODIGO_ERRORES.ERR_BAD_RESPONSE) {
+        if (error.code === AxiosError.ERR_BAD_RESPONSE) {
             if (
                 error.response &&
                 error.response.data &&
-                error.response.data.mensaje
+                error.response.data?.mensaje
             ) {
                 toast.error(error.response.data.mensaje);
             } else {
                 toast.error("Error de respuesta del servidor.");
             }
-        } else if (error.code == CODIGO_ERRORES.ECONNABORTED) {
+        } else if (error.code == AxiosError.ECONNABORTED) {
             toast.error(
                 "La solicitud ha tardado demasiado tiempo en responder.",
             );
@@ -65,7 +65,7 @@ service.interceptors.response.use(
             error.response &&
             [
                 HttpStatusCode.Unauthorized,
-                CODIGOS_ESTADO_HTTP_ADICIONALES.PageExpired,
+                AdditionalHttpStatusCodes.PageExpired,
             ].includes(error.response.status)
         ) {
             if (store.getters["autenticacion/usuarioAutenticado"]) {
@@ -81,20 +81,20 @@ service.interceptors.response.use(
         ) {
             const response = error?.response;
             const data = response?.data;
-            const errors = data?.errors;
-            const message = data?.message;
+            const errores = data?.errores;
+            const mensaje = data?.mensaje;
 
-            if (data?.errors && Object.keys(errors).length > 0) {
-                const errores = Object.values(errors).flat();
+            if (errores && Object.keys(errores).length > 0) {
+                const erroresPlanos = Object.values(errores).flat();
 
                 toast.error({
                     component: ListaErroresValidacion,
                     props: {
-                        errores,
+                        errores: erroresPlanos,
                     },
                 });
             } else {
-                toast.error(message);
+                toast.error(mensaje);
             }
         } else if (
             error.response &&
@@ -105,14 +105,11 @@ service.interceptors.response.use(
             toast.error(error.response.data.mensaje);
 
             if (error.response.status === HttpStatusCode.Forbidden) {
-                const usuarioAutenticado =
+                const usuarioAutenticado: Usuario =
                     store.getters["autenticacion/usuarioAutenticado"];
+                const rolesAutorizados: Rol[] = ["administrador", "usuario"];
 
-                if (
-                    [ROLES.administrador, ROLES.usuario].includes(
-                        usuarioAutenticado?.rol,
-                    )
-                ) {
+                if (rolesAutorizados.includes(usuarioAutenticado.rol)) {
                     router.push({ name: "inicio" });
                 } else {
                     router.push({ name: "no-autorizado" });

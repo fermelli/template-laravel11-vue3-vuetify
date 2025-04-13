@@ -1,3 +1,5 @@
+import type { ThemeDefinition } from "vuetify/lib/framework.mjs";
+
 export default {
     dark: true,
     colors: {
@@ -34,4 +36,4 @@ export default {
         "theme-code": "#263238",
         "theme-on-code": "#E0F2F1",
     },
-};
+} as ThemeDefinition;

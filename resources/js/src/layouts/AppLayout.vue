@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import BarraAplicacion from "@/components/BarraAplicacion.vue";
 import MenuNavegacion from "@/components/MenuNavegacion.vue";
 import { ref } from "vue";

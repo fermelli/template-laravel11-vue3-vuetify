@@ -1,8 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { useTheme } from "vuetify";
 import AppLayout from "./layouts/AppLayout.vue";
 import BlankLayout from "./layouts/BlankLayout.vue";
-import { LAYOUTS } from "./utils/constantes";
 
 const theme = useTheme();
 
@@ -17,7 +16,7 @@ establecerTemaActual();
 
 <template>
     <v-app>
-        <AppLayout v-if="$route.meta.layout == LAYOUTS.app" />
+        <AppLayout v-if="$route.meta.layout == 'app-layout'" />
 
         <BlankLayout v-else />
     </v-app>

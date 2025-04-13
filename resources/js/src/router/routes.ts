@@ -1,4 +1,4 @@
-import { LAYOUTS, ROLES } from "../utils/constantes";
+import type { RouteRecordRaw } from "vue-router";
 
 export default [
     {
@@ -6,9 +6,9 @@ export default [
         name: "inicio",
         component: () => import("../views/principal/InicioVista.vue"),
         meta: {
-            layout: LAYOUTS.app,
+            layout: "app-layout",
             requiresAuth: true,
-            rolesAutorizados: [ROLES.administrador, ROLES.usuario],
+            rolesAutorizados: ["administrador", "usuario"],
         },
     },
     {
@@ -16,7 +16,7 @@ export default [
         name: "login",
         component: () => import("../views/autenticacion/LoginVista.vue"),
         meta: {
-            layout: LAYOUTS.blank,
+            layout: "blank-layout",
             requiresAuth: false,
         },
     },
@@ -25,7 +25,7 @@ export default [
         name: "registrarse",
         component: () => import("../views/autenticacion/RegistrarseVista.vue"),
         meta: {
-            layout: LAYOUTS.blank,
+            layout: "blank-layout",
             requiresAuth: false,
         },
     },
@@ -34,7 +34,7 @@ export default [
         name: "no-autorizado",
         component: () => import("../views/errores/NoAutorizadoVista.vue"),
         meta: {
-            layout: LAYOUTS.blank,
+            layout: "blank-layout",
             requiresAuth: false,
         },
     },
@@ -43,8 +43,8 @@ export default [
         name: "no-encontrado",
         component: () => import("../views/errores/NoEncontradoVista.vue"),
         meta: {
-            layout: LAYOUTS.blank,
+            layout: "blank-layout",
             requiresAuth: false,
         },
     },
-];
+] as RouteRecordRaw[];
