@@ -34,8 +34,6 @@ async function loguearUsuario() {
         const usuarioAutenticado: Usuario =
             await autenticacionStore.obtenerUsuarioAutenticado();
 
-        console.log("Usuario autenticado:", usuarioAutenticado);
-
         if (usuarioAutenticado) {
             router.push({ name: "inicio" });
         }

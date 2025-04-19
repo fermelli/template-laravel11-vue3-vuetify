@@ -70,8 +70,6 @@ service.interceptors.response.use(
             ].includes(error.response.status)
         ) {
             if (autenticacionStore.usuarioAutenticado) {
-                console.log("localLogout");
-
                 autenticacionStore.localLogout();
             }
 
