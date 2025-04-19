@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Usuario } from "@/types/usuario";
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useAutenticacionStore } from "@/store/autenticacion";
 
-const store = useStore();
+const autenticacionStore = useAutenticacionStore();
 
 const usuarioAutenticado = computed<Usuario>(() => {
-    return store.getters["autenticacion/usuarioAutenticado"];
+    return autenticacionStore.usuarioAutenticado;
 });
 </script>
 

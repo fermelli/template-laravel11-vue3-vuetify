@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useAutenticacionStore } from "@/store/autenticacion";
 import { useTheme } from "vuetify";
 import type { Usuario } from "@/types/usuario";
 
-const store = useStore();
+const autenticacionStore = useAutenticacionStore();
 const theme = useTheme();
 
 const emit = defineEmits<{
@@ -12,7 +12,7 @@ const emit = defineEmits<{
 }>();
 
 const usuarioAutenticado = computed<Usuario>(() => {
-    return store.getters["autenticacion/usuarioAutenticado"];
+    return autenticacionStore.usuarioAutenticado;
 });
 
 function abrirCerrarMenuNavegacion() {
@@ -20,7 +20,7 @@ function abrirCerrarMenuNavegacion() {
 }
 
 async function cerrarSesion() {
-    await store.dispatch("autenticacion/logout");
+    await autenticacionStore.logout();
 }
 
 function cambiarTema() {

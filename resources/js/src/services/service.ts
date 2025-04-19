@@ -1,6 +1,5 @@
 import axios, { AxiosError, HttpStatusCode, type AxiosResponse } from "axios";
 import { useToast } from "vue-toastification";
-import store from "@/store";
 import router from "@/router";
 import ListaErroresValidacion from "@/components/ListaErroresValidacion.vue";
 import type { Rol, Usuario } from "@/types/usuario";
@@ -8,6 +7,7 @@ import {
     AdditionalHttpStatusCodes,
     type ApiResponse,
 } from "@/types/api-response";
+import { useAutenticacionStore } from "@/store/autenticacion";
 
 const service = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -46,6 +46,7 @@ service.interceptors.response.use(
     },
     (error: AxiosError<ApiResponse<unknown>>) => {
         const toast = useToast();
+        const autenticacionStore = useAutenticacionStore();
 
         if (error.code === AxiosError.ERR_BAD_RESPONSE) {
             if (
@@ -68,8 +69,10 @@ service.interceptors.response.use(
                 AdditionalHttpStatusCodes.PageExpired,
             ].includes(error.response.status)
         ) {
-            if (store.getters["autenticacion/usuarioAutenticado"]) {
-                store.dispatch("autenticacion/localLogout");
+            if (autenticacionStore.usuarioAutenticado) {
+                console.log("localLogout");
+
+                autenticacionStore.localLogout();
             }
 
             toast.error(
@@ -105,11 +108,14 @@ service.interceptors.response.use(
             toast.error(error.response.data.mensaje);
 
             if (error.response.status === HttpStatusCode.Forbidden) {
-                const usuarioAutenticado: Usuario =
-                    store.getters["autenticacion/usuarioAutenticado"];
+                const usuarioAutenticado: Usuario | null =
+                    autenticacionStore.usuarioAutenticado;
                 const rolesAutorizados: Rol[] = ["administrador", "usuario"];
 
-                if (rolesAutorizados.includes(usuarioAutenticado.rol)) {
+                if (
+                    usuarioAutenticado?.rol &&
+                    rolesAutorizados.includes(usuarioAutenticado.rol)
+                ) {
                     router.push({ name: "inicio" });
                 } else {
                     router.push({ name: "no-autorizado" });

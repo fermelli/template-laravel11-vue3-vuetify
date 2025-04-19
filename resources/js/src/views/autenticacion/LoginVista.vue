@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
 import autenticacionService from "@/services/autenticacion.service";
 import { correoElectronico, requerido } from "../../utils/validaciones";
 import type { Credentiales, Usuario } from "@/types/usuario";
+import { useAutenticacionStore } from "@/store/autenticacion";
 
-const store = useStore();
 const router = useRouter();
+const autenticacionStore = useAutenticacionStore();
 
 const formularioValido = ref(false);
 const enviandoFormulario = ref(false);
@@ -31,9 +31,10 @@ async function loguearUsuario() {
     try {
         await autenticacionService.login(formulario);
 
-        const usuarioAutenticado: Usuario = await store.dispatch(
-            "autenticacion/obtenerUsuarioAutenticado",
-        );
+        const usuarioAutenticado: Usuario =
+            await autenticacionStore.obtenerUsuarioAutenticado();
+
+        console.log("Usuario autenticado:", usuarioAutenticado);
 
         if (usuarioAutenticado) {
             router.push({ name: "inicio" });

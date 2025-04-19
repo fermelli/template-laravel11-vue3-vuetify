@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useRutasMenuNavegacionStore } from "@/store/rutas-menu-navegacion";
 
-const store = useStore();
+const rutasMenuNavegacionStore = useRutasMenuNavegacionStore();
 
 defineProps<{
     modelValue: boolean;
@@ -13,7 +13,7 @@ const emit = defineEmits<{
 }>();
 
 const rutasPermitidasPorRol = computed(
-    () => store.getters["rutasMenuNavegacion/rutasPermitidasPorRol"],
+    () => rutasMenuNavegacionStore.rutasPermitidasPorRol,
 );
 </script>
 

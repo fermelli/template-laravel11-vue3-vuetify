@@ -4,8 +4,8 @@ import {
     type RouteLocationRaw,
 } from "vue-router";
 import routes from "./routes";
-import store from "@/store";
 import type { Usuario } from "@/types/usuario";
+import { useAutenticacionStore } from "@/store/autenticacion";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -22,8 +22,9 @@ router.afterEach(() => {
 
 router.beforeEach(async (to, from, next) => {
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-    const usuarioAutenticado: Usuario =
-        store.getters["autenticacion/usuarioAutenticado"];
+    const autenticacionStore = useAutenticacionStore();
+    const usuarioAutenticado: Usuario | null =
+        autenticacionStore.usuarioAutenticado;
     const rutaLogin: RouteLocationRaw = { name: "login" };
     const rutaInicio: RouteLocationRaw = { name: "inicio" };
     const rutaNoAutorizado: RouteLocationRaw = { name: "no-autorizado" };
@@ -32,10 +33,10 @@ router.beforeEach(async (to, from, next) => {
     const esRutaNoAutorizado = to.name === "no-autorizado";
 
     if (requiresAuth && !usuarioAutenticado) {
-        await store.dispatch("autenticacion/obtenerUsuarioAutenticado");
+        await autenticacionStore.obtenerUsuarioAutenticado();
 
-        const usuarioAutenticado: Usuario =
-            store.getters["autenticacion/usuarioAutenticado"];
+        const usuarioAutenticado: Usuario | null =
+            autenticacionStore.usuarioAutenticado;
 
         if (!usuarioAutenticado) {
             next(rutaLogin);
@@ -54,9 +55,9 @@ router.beforeEach(async (to, from, next) => {
         }
     } else {
         if (esRutaLogin || esRutaNoAutorizado || esRutaRegistrarse) {
-            await store.dispatch("autenticacion/obtenerUsuarioAutenticado");
+            await autenticacionStore.obtenerUsuarioAutenticado();
 
-            if (store.getters["autenticacion/usuarioAutenticado"]) {
+            if (autenticacionStore.usuarioAutenticado) {
                 next(rutaInicio);
             } else {
                 next();
