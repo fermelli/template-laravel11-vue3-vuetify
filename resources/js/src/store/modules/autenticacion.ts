@@ -1,5 +1,5 @@
 import type { Usuario } from "@/types/usuario";
-import AutenticacionService from "../../services/autenticacion.service";
+import autenticacionService from "../../services/autenticacion.service";
 import router from "@/router";
 
 export interface AutenticacionState {
@@ -22,7 +22,7 @@ const autenticacionStore = {
         async obtenerUsuarioAutenticado({ commit }) {
             try {
                 const response =
-                    await AutenticacionService.usuarioAutenticado();
+                    await autenticacionService.usuarioAutenticado();
                 const data = response.data;
 
                 commit("setUsuario", data?.datos);
@@ -34,7 +34,8 @@ const autenticacionStore = {
             }
         },
         async logout({ dispatch }) {
-            return AutenticacionService.logout()
+            return autenticacionService
+                .logout()
                 .then(() => {
                     dispatch("localLogout");
                 })

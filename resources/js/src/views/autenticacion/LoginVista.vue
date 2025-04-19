@@ -2,7 +2,7 @@
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
-import AutenticacionService from "@/services/autenticacion.service";
+import autenticacionService from "@/services/autenticacion.service";
 import { correoElectronico, requerido } from "../../utils/validaciones";
 import type { Credentiales, Usuario } from "@/types/usuario";
 
@@ -29,7 +29,7 @@ async function loguearUsuario() {
     enviandoFormulario.value = true;
 
     try {
-        await AutenticacionService.login(formulario);
+        await autenticacionService.login(formulario);
 
         const usuarioAutenticado: Usuario = await store.dispatch(
             "autenticacion/obtenerUsuarioAutenticado",

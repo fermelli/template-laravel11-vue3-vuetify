@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
-import AutenticacionService from "@/services/autenticacion.service";
+import autenticacionService from "@/services/autenticacion.service";
 import {
     confirmarPassword,
     correoElectronico,
@@ -36,7 +36,7 @@ async function registrarUsuario() {
     enviandoFormulario.value = true;
 
     try {
-        await AutenticacionService.register(formulario);
+        await autenticacionService.register(formulario);
 
         router.push({ name: "inicio" });
     } catch (error) {
