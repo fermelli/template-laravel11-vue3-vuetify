@@ -19,8 +19,8 @@ function abrirCerrarMenuNavegacion() {
     emit("abrirCerrarMenuNavegacion");
 }
 
-function cerrarSesion() {
-    store.dispatch("autenticacion/logout");
+async function cerrarSesion() {
+    await store.dispatch("autenticacion/logout");
 }
 
 function cambiarTema() {
