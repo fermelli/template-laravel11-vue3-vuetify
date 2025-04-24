@@ -7,7 +7,7 @@ import Toast from "vue-toastification";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import "vue-toastification/dist/index.css";
 import { VUE_TOASTIFICATION_OPTIONS } from "./utils/constantes";
-import "./assets/css/main.css";
+import "@/assets/scss/vue-toastification/index.scss";
 
 const pinia = createPinia();
 const app = createApp(App);
