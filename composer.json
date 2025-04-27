@@ -10,7 +10,8 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "mreduar/laravel-phpcs": "^1.8"
+        "mreduar/laravel-phpcs": "^1.8",
+        "spatie/laravel-multitenancy": "^4.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

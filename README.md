@@ -4,10 +4,10 @@ Esta es una plantilla de Laravel 11 con Vue 3 y Vuetify 3.
 
 ## Requisitos
 
--   PHP >= 8.2
--   Composer >= 2.7.8
--   Node.js >= 18
--   NPM >= 10 or Yarn >= 1.22 (Recomendado)
+- PHP >= 8.2
+- Composer >= 2.7.8
+- Node.js >= 18
+- NPM >= 10 or Yarn >= 1.22 (Recomendado)
 
 ## Instalacion
 
@@ -23,3 +23,30 @@ Esta es una plantilla de Laravel 11 con Vue 3 y Vuetify 3.
 10. Compilar los assetas para desarrollo con `yarn dev` o para producción con `yarn build`. Para una dirección específica (por ejemplo 192.168.1.20) `yarn dev --host 192.168.1.20`.
 11. Acceder a la dirección del servidor en el navegador, por defecto es [http://localhost:8000](http://localhost:8000) o la dirección que hayas especificado en el paso 9 (por ejemplo [http://192.168.1.20:8000](http://192.168.1.20:8000)).
 12. El usuario por defecto es `luisfernandosalgadomiguez@gmail.com` y la contraseña es `Password123$`. Puedes cambiar las credenciales en el archivo [DatabaseSeeder.php](database/seeders/DatabaseSeeder.php).
+
+## Multitenencia
+
+### Configuraciones
+
+- Configurar el archivo .env con las variables de entorno para la multitenencia.
+
+```bash
+# Lanlord database connection
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Tenant database connection
+DB_HOST_TENANT=127.0.0.1
+DB_PORT_TENANT=3306
+DB_USERNAME_TENANT=root
+DB_PASSWORD_TENANT=
+```
+
+### Migraciones
+
+- Ejecutar el comando `php artisan migrate --path=database/migrations/landlord` para crear las tablas de la base de datos del landlord.
+- Ejecutar el comando `php artisan tenants:artisan "migrate --database=tenant"` para crear las tablas de la base de datos del tenant. Si desea ejecutar los seederes, ejecute el comando `php artisan tenants:artisan "migrate --database=tenant --seed"`.

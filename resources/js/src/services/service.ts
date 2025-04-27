@@ -17,6 +17,7 @@ const service = axios.create({
         "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
         "Content-Type": "application/json",
+        "X-Tenant-ID": "zulauf-hickle-and-walsh",
     },
 });
 
