@@ -58,7 +58,7 @@ service.interceptors.response.use(
             } else {
                 toast.error("Error de respuesta del servidor.");
             }
-        } else if (error.code == AxiosError.ECONNABORTED) {
+        } else if (error.code === AxiosError.ECONNABORTED) {
             toast.error(
                 "La solicitud ha tardado demasiado tiempo en responder.",
             );
