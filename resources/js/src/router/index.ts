@@ -1,6 +1,9 @@
 import {
     createRouter,
     createWebHistory,
+    type NavigationGuardNext,
+    type RouteLocationNormalizedGeneric,
+    type RouteLocationNormalizedLoadedGeneric,
     type RouteLocationRaw,
 } from "vue-router";
 import routes from "./routes";
@@ -20,52 +23,51 @@ router.afterEach(() => {
     }
 });
 
-router.beforeEach(async (to, from, next) => {
-    const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-    const autenticacionStore = useAutenticacionStore();
-    const usuarioAutenticado: Usuario | null =
-        autenticacionStore.usuarioAutenticado;
-    const rutaLogin: RouteLocationRaw = { name: "login" };
-    const rutaInicio: RouteLocationRaw = { name: "inicio" };
-    const rutaNoAutorizado: RouteLocationRaw = { name: "no-autorizado" };
-    const esRutaLogin = to.name === "login";
-    const esRutaRegistrarse = to.name === "registrarse";
-    const esRutaNoAutorizado = to.name === "no-autorizado";
+router.beforeEach(
+    async (
+        to: RouteLocationNormalizedGeneric,
+        from: RouteLocationNormalizedLoadedGeneric,
+        next: NavigationGuardNext,
+    ) => {
+        const requiresAuth = to.matched.some(
+            (record) => record.meta.requiresAuth,
+        );
+        const autenticacionStore = useAutenticacionStore();
 
-    if (requiresAuth && !usuarioAutenticado) {
-        await autenticacionStore.obtenerUsuarioAutenticado();
+        let usuario: Usuario | null = autenticacionStore.usuarioAutenticado;
 
-        const usuarioAutenticado: Usuario | null =
-            autenticacionStore.usuarioAutenticado;
-
-        if (!usuarioAutenticado) {
-            next(rutaLogin);
-        } else {
-            if (esRutaLogin) {
-                next(rutaInicio);
-            } else {
-                if (
-                    !to.meta?.rolesAutorizados?.includes(usuarioAutenticado.rol)
-                ) {
-                    next(rutaNoAutorizado);
-                } else {
-                    next();
-                }
-            }
-        }
-    } else {
-        if (esRutaLogin || esRutaNoAutorizado || esRutaRegistrarse) {
+        if (!usuario) {
             await autenticacionStore.obtenerUsuarioAutenticado();
 
-            if (autenticacionStore.usuarioAutenticado) {
-                next(rutaInicio);
-            } else {
-                next();
-            }
-        } else {
-            next();
+            usuario = autenticacionStore.usuarioAutenticado;
         }
-    }
-});
+
+        const isAuthRoute = ["login", "registrarse"].includes(
+            to.name as string,
+        );
+
+        const rutaLogin: RouteLocationRaw = { name: "login" };
+        const rutaInicio: RouteLocationRaw = { name: "inicio" };
+        const rutaNoAutorizado: RouteLocationRaw = { name: "no-autorizado" };
+
+        if (requiresAuth && !usuario) {
+            return next(rutaLogin);
+        }
+
+        if (usuario && isAuthRoute) {
+            return next(rutaInicio);
+        }
+
+        if (requiresAuth && usuario && to.meta?.rolesAutorizados) {
+            const rolesPermitidos = to.meta.rolesAutorizados;
+
+            if (!rolesPermitidos.includes(usuario.rol)) {
+                return next(rutaNoAutorizado);
+            }
+        }
+
+        return next();
+    },
+);
 
 export default router;
