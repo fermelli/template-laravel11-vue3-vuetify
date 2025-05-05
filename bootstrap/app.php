@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Middleware\RedirectIfAuthenticated;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 
@@ -23,12 +25,22 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (ValidationException $exception) {
-            $codigoEstado = $exception->status;
+            $codigoEstado = $exception->status ?: HttpResponse::HTTP_UNPROCESSABLE_ENTITY;
 
             return Response::jsonResponseValidacionError(
                 'Error de validación.',
                 $codigoEstado,
                 $exception->errors()
+            );
+        });
+        $exceptions->render(function (AuthenticationException $exception) {
+            $codigoEstado = $exception->getCode() ?: HttpResponse::HTTP_UNAUTHORIZED;
+            $mensaje = 'No autenticado.';
+
+            return Response::jsonResponse(
+                $mensaje,
+                null,
+                $codigoEstado,
             );
         });
     })->create();

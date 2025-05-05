@@ -37,7 +37,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 return $request->wantsJson()
-                    ? Response::jsonResponse('Usuario registrado.', null, 201)
+                    ? Response::jsonResponse('Usuario registrado.', $request->user(), 201)
                     : redirect()->intended('/');
             }
         });
