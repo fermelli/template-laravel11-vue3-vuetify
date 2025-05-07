@@ -344,8 +344,8 @@ class FortifyTest extends TestCase
         $response = $this->postJson(route('register.store'), [
             'nombre' => Str::random(256),
             Fortify::username() => 'InvalidEmail' . Str::random(256),
-            'password' => '123',
-            'password_confirmation' => '456',
+            'password' => 'abc',
+            'password_confirmation' => 'def',
         ]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -381,6 +381,15 @@ class FortifyTest extends TestCase
                     trans('validation.min.string', [
                         'attribute' => 'password',
                         'min' => 8,
+                    ]),
+                    trans('validation.password.mixed', [
+                        'attribute' => 'password',
+                    ]),
+                    trans('validation.password.symbols', [
+                        'attribute' => 'password',
+                    ]),
+                    trans('validation.password.numbers', [
+                        'attribute' => 'password',
                     ]),
                     trans('validation.confirmed', [
                         'attribute' => 'password',
