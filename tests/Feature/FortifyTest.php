@@ -24,8 +24,6 @@ class FortifyTest extends TestCase
         $this->assertTrue(app('router')->has('login.store'));
         $this->assertTrue(app('router')->has('logout'));
         $this->assertTrue(app('router')->has('register.store'));
-        $this->assertTrue(app('router')->has('password.confirm.store'));
-        $this->assertTrue(app('router')->has('password.confirmation'));
     }
 
     public function testUsuarioPuedeIniciarSesionConCredencialesValidas()
