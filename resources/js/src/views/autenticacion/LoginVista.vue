@@ -31,7 +31,7 @@ async function loguearUsuario() {
     try {
         await autenticacionService.login(formulario);
 
-        const usuarioAutenticado: Usuario =
+        const usuarioAutenticado: Usuario | null | undefined =
             await autenticacionStore.obtenerUsuarioAutenticado();
 
         if (usuarioAutenticado) {

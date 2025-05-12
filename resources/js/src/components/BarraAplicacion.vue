@@ -11,7 +11,7 @@ const emit = defineEmits<{
     (e: "abrirCerrarMenuNavegacion"): void;
 }>();
 
-const usuarioAutenticado = computed<Usuario>(() => {
+const usuarioAutenticado = computed<Usuario | null | undefined>(() => {
     return autenticacionStore.usuarioAutenticado;
 });
 
