@@ -2,9 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ResetPasswordMail;
 use App\Models\Usuario;
+use App\Notifications\CustomResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Laravel\Fortify\Fortify;
@@ -24,6 +27,8 @@ class FortifyTest extends TestCase
         $this->assertTrue(app('router')->has('login.store'));
         $this->assertTrue(app('router')->has('logout'));
         $this->assertTrue(app('router')->has('register.store'));
+        $this->assertTrue(app('router')->has('password.email'));
+        $this->assertTrue(app('router')->has('password.reset'));
     }
 
     public function testUsuarioPuedeIniciarSesionConCredencialesValidas()
@@ -397,5 +402,78 @@ class FortifyTest extends TestCase
                 ],
             ],
         ]);
+    }
+
+    public function testVerificarContenidoDeCorreoDeRestablecimientoDeContrasena()
+    {
+        $email = fake()->unique()->safeEmail();
+
+        $usuario = Usuario::factory()->create([
+            Fortify::username() => $email,
+        ]);
+
+        $token = Str::random(60);
+        $tokenUri = "token=$token";
+        $correoElectronicoUri = 'correo_electronico=' . urlencode($email);
+        $urlRestablecimientoPassword = url('reset-password') . "?$tokenUri&$correoElectronicoUri";
+
+        $mailable = new ResetPasswordMail(
+            $email,
+            $urlRestablecimientoPassword
+        );
+
+        $mailable->assertTo($email);
+        $mailable->assertFrom(config('mail.from.address'));
+        $mailable->assertHasSubject('Restablecimiento de contraseña');
+        
+        $mailable->assertSeeInOrderInHtml([
+            'Restablecimiento de contraseña',
+            'Hemos recibido una solicitud para restablecer tu contraseña.',
+            'Haz clic en el siguiente botón para crear una nueva contraseña:',
+            $urlRestablecimientoPassword,
+            'Si no solicitaste este cambio, puedes ignorar este correo con toda seguridad.',
+            'El enlace de restablecimiento expirará en ' . config('auth.passwords.users.expire') . ' minutos.',
+        ]);
+    }
+
+    public function testUsuarioPuedeSolicitarRestablecimientoDeContrasena()
+    {
+        Notification::fake();
+        
+        $email = fake()->unique()->safeEmail();
+
+        $usuario = Usuario::factory()->create([
+            Fortify::username() => $email,
+        ]);
+
+        Notification::assertNothingSent();
+
+        $response = $this->postJson(route('password.email'), [
+            Fortify::username() => $email,
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJsonStructure([
+            'mensaje',
+            'codigo_estado',
+            'datos',
+            'errores',
+        ]);
+
+        $response->assertJson([
+            'mensaje' => trans('passwords.sent'),
+            'codigo_estado' => Response::HTTP_OK,
+            'datos' => null,
+            'errores' => null,
+        ]);
+
+        Notification::assertSentTo(
+            $usuario,
+            CustomResetPassword::class,
+            function ($notification, $channels) {
+                return $notification->token !== null && in_array('mail', $channels);
+            }
+        );
     }
 }

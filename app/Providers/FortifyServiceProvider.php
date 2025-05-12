@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\FailedPasswordResetLinkRequestResponse;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
+use Laravel\Fortify\Contracts\SuccessfulPasswordResetLinkRequestResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -47,6 +49,24 @@ class FortifyServiceProvider extends ServiceProvider
             {
                 return $request->wantsJson()
                     ? Response::jsonResponse('Usuario autenticado.', $request->user(), 200)
+                    : redirect()->intended('/');
+            }
+        });
+
+        $this->app->instance(SuccessfulPasswordResetLinkRequestResponse::class, new class implements SuccessfulPasswordResetLinkRequestResponse {
+            public function toResponse($request)
+            {
+                return $request->wantsJson()
+                    ? Response::jsonResponse(trans('passwords.sent'), null, 200)
+                    : redirect()->intended('/');
+            }
+        });
+
+        $this->app->instance(FailedPasswordResetLinkRequestResponse::class, new class implements FailedPasswordResetLinkRequestResponse {
+            public function toResponse($request)
+            {
+                return $request->wantsJson()
+                    ? Response::jsonResponse(trans('passwords.user'), null, 400)
                     : redirect()->intended('/');
             }
         });
