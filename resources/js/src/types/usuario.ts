@@ -24,3 +24,7 @@ export interface Usuario {
     actualizado_en: Date;
     eliminado_en: Date | null;
 }
+
+export interface ForgotPassword {
+    correo_electronico: string;
+}

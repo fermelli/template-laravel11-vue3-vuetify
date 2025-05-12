@@ -1,6 +1,11 @@
 import axios from "axios";
 import service from "./service";
-import type { Credentiales, Registro, Usuario } from "@/types/usuario";
+import type {
+    Credentiales,
+    ForgotPassword,
+    Registro,
+    Usuario,
+} from "@/types/usuario";
 import type { ApiResponse } from "../types/api-response";
 
 export default {
@@ -17,5 +22,8 @@ export default {
     },
     async register(datos: Registro) {
         return await service.post<ApiResponse<Usuario>>("/register", datos);
+    },
+    async forgotPassword(datos: ForgotPassword) {
+        return await service.post<ApiResponse<null>>("/forgot-password", datos);
     },
 };

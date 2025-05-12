@@ -19,4 +19,13 @@ export const rutasAutenticacion: RouteRecordRaw[] = [
             requiresAuth: false,
         },
     },
+    {
+        path: "/autenticacion/olvide-contrasena",
+        name: "olvide-contrasena",
+        component: () => import("./OlvideContrasenaVista.vue"),
+        meta: {
+            layout: "blank-layout",
+            requiresAuth: false,
+        },
+    },
 ];

@@ -112,6 +112,22 @@ async function loguearUsuario() {
 
                         <div class="d-flex flex-column align-center">
                             <span class="text-caption">
+                                ¿Olvidaste tu contraseña?
+                            </span>
+
+                            <v-btn
+                                color="primary"
+                                density="compact"
+                                variant="text"
+                                size="small"
+                                :to="{ name: 'olvide-contrasena' }"
+                            >
+                                Recuperar contraseña
+                            </v-btn>
+                        </div>
+
+                        <div class="d-flex flex-column align-center">
+                            <span class="text-caption">
                                 ¿No tienes una cuenta?
                             </span>
 
