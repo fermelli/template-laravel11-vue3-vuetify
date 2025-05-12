@@ -56,12 +56,12 @@ async function registrarUsuario() {
                 :disabled="enviandoFormulario"
                 @submit.prevent="registrarUsuario"
             >
-                <v-card class="mx-auto my-4" max-width="440">
+                <v-card class="mx-auto py-4" max-width="440">
                     <v-card-title>
                         <span class="text-h6">Registrarse</span>
                     </v-card-title>
 
-                    <v-card-text>
+                    <v-card-text class="pb-0">
                         <v-text-field
                             v-model="formulario.nombre"
                             class="mb-2"
@@ -129,35 +129,40 @@ async function registrarUsuario() {
                                 passwordMostrado = !passwordMostrado
                             "
                         />
-
-                        <v-card-actions class="d-flex justify-space-between">
-                            <div class="d-flex flex-column align-center">
-                                <span class="text-caption">
-                                    ¿Ya tienes una cuenta?
-                                </span>
-
-                                <v-btn
-                                    color="primary"
-                                    density="compact"
-                                    variant="text"
-                                    size="small"
-                                    :to="{ name: 'login' }"
-                                >
-                                    Iniciar sesión
-                                </v-btn>
-                            </div>
-                            <v-btn
-                                type="submit"
-                                color="primary"
-                                variant="tonal"
-                                density="comfortable"
-                                prepend-icon="mdi-account-plus"
-                                :loading="enviandoFormulario"
-                            >
-                                Registrarse
-                            </v-btn>
-                        </v-card-actions>
                     </v-card-text>
+
+                    <v-card-actions
+                        class="d-flex flex-wrap justify-space-between px-4"
+                    >
+                        <v-btn
+                            class="mb-2"
+                            type="submit"
+                            color="primary"
+                            variant="tonal"
+                            density="comfortable"
+                            prepend-icon="mdi-account-plus"
+                            block
+                            :loading="enviandoFormulario"
+                        >
+                            Registrarse
+                        </v-btn>
+
+                        <div class="d-flex flex-column align-center">
+                            <span class="text-caption">
+                                ¿Ya tienes una cuenta?
+                            </span>
+
+                            <v-btn
+                                color="primary"
+                                density="compact"
+                                variant="text"
+                                size="small"
+                                :to="{ name: 'login' }"
+                            >
+                                Iniciar sesión
+                            </v-btn>
+                        </div>
+                    </v-card-actions>
                 </v-card>
             </v-form>
         </v-col>

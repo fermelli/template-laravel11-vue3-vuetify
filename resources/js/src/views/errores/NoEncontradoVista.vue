@@ -2,12 +2,12 @@
 
 <template>
     <v-responsive class="fill-height">
-        <v-card max-width="600" class="mx-auto my-5" variant="tonal">
+        <v-card max-width="600" class="mx-auto py-4" variant="tonal">
             <v-card-title>
-                <h1 class="text-h5 text-center my-2">Página no encontrada</h1>
+                <h1 class="text-h5 text-center">Página no encontrada</h1>
             </v-card-title>
 
-            <v-card-text>
+            <v-card-text class="pb-0">
                 <v-img
                     height="100%"
                     src="@/assets/imagenes/no-encontrado.svg"

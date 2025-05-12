@@ -54,12 +54,12 @@ async function loguearUsuario() {
                 :disabled="enviandoFormulario"
                 @submit.prevent="loguearUsuario"
             >
-                <v-card class="mx-auto my-4" max-width="440">
+                <v-card class="mx-auto py-4" max-width="440">
                     <v-card-title>
                         <span class="text-h6">Iniciar Sesión</span>
                     </v-card-title>
 
-                    <v-card-text>
+                    <v-card-text class="pb-0">
                         <v-text-field
                             v-model="formulario.correo_electronico"
                             class="mb-2"
@@ -92,36 +92,40 @@ async function loguearUsuario() {
                                 passwordMostrado = !passwordMostrado
                             "
                         />
+                    </v-card-text>
 
-                        <v-card-actions class="d-flex justify-space-between">
-                            <div class="d-flex flex-column align-center">
-                                <span class="text-caption">
-                                    ¿No tienes una cuenta?
-                                </span>
+                    <v-card-actions
+                        class="d-flex flex-wrap justify-space-between px-4"
+                    >
+                        <v-btn
+                            class="mb-2"
+                            type="submit"
+                            variant="tonal"
+                            color="primary"
+                            density="comfortable"
+                            prepend-icon="mdi-lock"
+                            block
+                            :loading="enviandoFormulario"
+                        >
+                            Ingresar
+                        </v-btn>
 
-                                <v-btn
-                                    color="primary"
-                                    density="compact"
-                                    variant="text"
-                                    size="small"
-                                    :to="{ name: 'registrarse' }"
-                                >
-                                    Registrarse
-                                </v-btn>
-                            </div>
+                        <div class="d-flex flex-column align-center">
+                            <span class="text-caption">
+                                ¿No tienes una cuenta?
+                            </span>
 
                             <v-btn
-                                type="submit"
-                                variant="tonal"
                                 color="primary"
-                                density="comfortable"
-                                prepend-icon="mdi-lock"
-                                :loading="enviandoFormulario"
+                                density="compact"
+                                variant="text"
+                                size="small"
+                                :to="{ name: 'registrarse' }"
                             >
-                                Ingresar
+                                Registrarse
                             </v-btn>
-                        </v-card-actions>
-                    </v-card-text>
+                        </div>
+                    </v-card-actions>
                 </v-card>
             </v-form>
         </v-col>
