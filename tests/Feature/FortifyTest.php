@@ -413,9 +413,10 @@ class FortifyTest extends TestCase
         ]);
 
         $token = Str::random(60);
-        $tokenUri = "token=$token";
         $correoElectronicoUri = 'correo_electronico=' . urlencode($email);
-        $urlRestablecimientoPassword = url('reset-password') . "?$tokenUri&$correoElectronicoUri";
+        $urlRestablecimientoPassword = url('autenticacion/recuperar-contrasena', [
+            'token' => $token,
+        ]) . "?$correoElectronicoUri";
 
         $mailable = new ResetPasswordMail(
             $email,

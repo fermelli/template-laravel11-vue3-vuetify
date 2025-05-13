@@ -41,9 +41,10 @@ class CustomResetPassword extends Notification
     public function toMail(object $notifiable)
     {
         $email = $notifiable->getEmailForPasswordReset();
-        $tokenUri = "token=$this->token";
         $correoElectronicoUri = 'correo_electronico=' . urlencode($email);
-        $urlRestablecimientoPassword = url('reset-password') . "?$tokenUri&$correoElectronicoUri";
+        $urlRestablecimientoPassword = url('autenticacion/recuperar-contrasena', [
+            'token' => $this->token,
+        ]) . "?$correoElectronicoUri";
 
         return new ResetPasswordMail(
             $email,
