@@ -28,6 +28,7 @@ class FortifyTest extends TestCase
         $this->assertTrue(app('router')->has('logout'));
         $this->assertTrue(app('router')->has('register.store'));
         $this->assertTrue(app('router')->has('password.email'));
+        $this->assertTrue(app('router')->has('password.update'));
     }
 
     public function testUsuarioPuedeIniciarSesionConCredencialesValidas()
@@ -474,5 +475,61 @@ class FortifyTest extends TestCase
                 return $notification->token !== null && in_array('mail', $channels);
             }
         );
+    }
+
+    public function testUsuarioNoPuedeSolicitarRestablecimientoDeContrasenaConEmailInvalido()
+    {
+        $response = $this->postJson(route('password.email'), [
+            Fortify::username() => 'InvalidEmail',
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $response->assertJsonStructure([
+            'mensaje',
+            'codigo_estado',
+            'datos',
+            'errores' => [
+                Fortify::username(),
+            ],
+        ]);
+
+        $response->assertJson([
+            'mensaje' => 'Error de validación.',
+            'codigo_estado' => Response::HTTP_UNPROCESSABLE_ENTITY,
+            'datos' => null,
+            'errores' => [
+                Fortify::username() => [
+                    trans('validation.email', [
+                        'attribute' => Str::replace('_', ' ', Fortify::username()),
+                    ]),
+                ],
+            ],
+        ]);
+    }
+
+    public function testUsuarioNoPuedeSolicitarRestablecimientoDeContrasenaConEmailNoExistente()
+    {
+        $email = fake()->unique()->safeEmail();
+
+        $response = $this->postJson(route('password.email'), [
+            Fortify::username() => $email,
+        ]);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+
+        $response->assertJsonStructure([
+            'mensaje',
+            'codigo_estado',
+            'datos',
+            'errores',
+        ]);
+
+        $response->assertJson([
+            'mensaje' => trans('passwords.user'),
+            'codigo_estado' => Response::HTTP_BAD_REQUEST,
+            'datos' => null,
+            'errores' => null,
+        ]);
     }
 }
