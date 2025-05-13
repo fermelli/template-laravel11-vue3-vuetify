@@ -4,6 +4,7 @@ import type {
     Credentiales,
     ForgotPassword,
     Registro,
+    ResetPassword,
     Usuario,
 } from "@/types/usuario";
 import type { ApiResponse } from "../types/api-response";
@@ -25,5 +26,8 @@ export default {
     },
     async forgotPassword(datos: ForgotPassword) {
         return await service.post<ApiResponse<null>>("/forgot-password", datos);
+    },
+    async resetPassword(datos: ResetPassword) {
+        return await service.post<ApiResponse<null>>("/reset-password", datos);
     },
 };

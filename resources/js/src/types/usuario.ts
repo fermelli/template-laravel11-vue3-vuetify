@@ -28,3 +28,10 @@ export interface Usuario {
 export interface ForgotPassword {
     correo_electronico: string;
 }
+
+export interface ResetPassword {
+    correo_electronico: string;
+    password: string;
+    password_confirmation: string;
+    token: string;
+}

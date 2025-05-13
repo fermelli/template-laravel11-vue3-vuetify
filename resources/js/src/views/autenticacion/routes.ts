@@ -28,4 +28,14 @@ export const rutasAutenticacion: RouteRecordRaw[] = [
             requiresAuth: false,
         },
     },
+    {
+        path: "/autenticacion/recuperar-contrasena/:token",
+        name: "recuperar-contrasena",
+        component: () => import("./RecuperarContrasenaVista.vue"),
+        props: true,
+        meta: {
+            layout: "blank-layout",
+            requiresAuth: false,
+        },
+    },
 ];
