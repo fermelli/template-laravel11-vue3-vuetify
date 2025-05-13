@@ -96,7 +96,7 @@
         </div>
         
         <div class="email-footer">
-            <p>&copy; {{ date('Y') }} Tu Empresa. Todos los derechos reservados.</p>
+            <p>&copy; {{ date('Y') }} {{ env('APP_NAME') }} | Todos los derechos reservados.</p>
             <p>Este es un correo automático, por favor no respondas.</p>
             <p>
                 <small>
