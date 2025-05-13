@@ -3,7 +3,10 @@ import { reactive, ref } from "vue";
 import { correoElectronico, requerido } from "../../utils/validaciones";
 import type { ForgotPassword } from "@/types/usuario";
 import autenticacionService from "@/services/autenticacion.service";
-import OlvideContrasenaDialog from "./components/OlvideContrasenaDialog.vue";
+import DialogoConfirmacion from "@/components/DialogoConfirmacion.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const formularioValido = ref(false);
 const enviandoFormulario = ref(false);
@@ -105,8 +108,16 @@ async function enviarCorreoRecuperacion() {
         </v-col>
     </v-row>
 
-    <OlvideContrasenaDialog
+    <DialogoConfirmacion
         v-model="correoRecuperacionEnviadoExitosamente"
-        :correo-electronico="formulario.correo_electronico"
-    />
+        titulo="Correo de recuperación enviado"
+        :mostrado-boton-cancelar="false"
+        @aceptar="router.push({ name: 'login' })"
+    >
+        <p>
+            Se ha enviado un correo electrónico a
+            <strong>{{ formulario.correo_electronico }}</strong> con
+            instrucciones para restablecer su contraseña.
+        </p>
+    </DialogoConfirmacion>
 </template>

@@ -6,11 +6,12 @@ import {
     requerido,
     password,
 } from "../../utils/validaciones";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import autenticacionService from "@/services/autenticacion.service";
-import RecuperarContrasenaDialog from "./components/RecuperarContrasenaDialog.vue";
+import DialogoConfirmacion from "@/components/DialogoConfirmacion.vue";
 
 const route = useRoute();
+const router = useRouter();
 
 const props = defineProps({
     token: {
@@ -159,5 +160,15 @@ onMounted(() => {
         </v-col>
     </v-row>
 
-    <RecuperarContrasenaDialog v-model="contrasenaActualizadaExitosamente" />
+    <DialogoConfirmacion
+        v-model="contrasenaActualizadaExitosamente"
+        titulo="Contraseña actualizada"
+        :mostrado-boton-cancelar="false"
+        @aceptar="router.push({ name: 'login' })"
+    >
+        <p>
+            Se ha actualizado su contraseña correctamente. Puede iniciar sesión
+            con su nueva contraseña.
+        </p>
+    </DialogoConfirmacion>
 </template>
