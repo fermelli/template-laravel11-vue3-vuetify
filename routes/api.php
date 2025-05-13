@@ -11,3 +11,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::post('/forgot-password', [CustomPasswordResetLinkController::class, 'store'])
     ->name('password.email');
+
+Route::post('/reset-password', [\App\Http\Controllers\CustomNewPasswordController::class, 'store'])
+    ->name('password.update');

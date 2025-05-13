@@ -532,4 +532,81 @@ class FortifyTest extends TestCase
             'errores' => null,
         ]);
     }
+
+    public function testUsuarioPuedeRestablecerContrasena()
+    {
+        $rawPassword = 'Password123$';
+        $newPassword = 'NewPassword123$';
+        $email = fake()->unique()->safeEmail();
+
+        $usuario = Usuario::factory()->create([
+            Fortify::username() => $email,
+            'password' => bcrypt($rawPassword),
+        ]);
+        $token = app('auth.password.broker')->createToken($usuario);
+
+        $response = $this->postJson(route('password.update'), [
+            'correo_electronico' => $email,
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword,
+            'token' => $token,
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJsonStructure([
+            'mensaje',
+            'codigo_estado',
+            'datos',
+            'errores',
+        ]);
+
+        $response->assertJson([
+            'mensaje' => trans('passwords.reset'),
+            'codigo_estado' => Response::HTTP_OK,
+            'datos' => null,
+            'errores' => null,
+        ]);
+    }
+
+    public function testUsuarioNoPuedeRestablecerContrasenaConTokenInvalido()
+    {
+        $rawPassword = 'Password123$';
+        $newPassword = 'NewPassword123$';
+        $email = fake()->unique()->safeEmail();
+
+        Usuario::factory()->create([
+            Fortify::username() => $email,
+            'password' => bcrypt($rawPassword),
+        ]);
+        
+        $token = Str::random(60);
+
+        $response = $this->postJson(route('password.update'), [
+            'correo_electronico' => $email,
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword,
+            'token' => $token,
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $response->assertJsonStructure([
+            'mensaje',
+            'codigo_estado',
+            'datos',
+            'errores',
+        ]);
+
+        $response->assertJson([
+            'mensaje' => 'Error de validación.',
+            'codigo_estado' => Response::HTTP_UNPROCESSABLE_ENTITY,
+            'datos' => null,
+            'errores' => [
+                'token' => [
+                    trans('passwords.token'),
+                ],
+            ],
+        ]);
+    }
 }

@@ -70,6 +70,32 @@ class FortifyServiceProvider extends ServiceProvider
                     : redirect()->intended('/');
             }
         });
+
+        $this->app->instance(\Laravel\Fortify\Contracts\PasswordResetResponse::class, new class implements \Laravel\Fortify\Contracts\PasswordResetResponse {
+            public function toResponse($request)
+            {
+                return $request->wantsJson()
+                    ? Response::jsonResponse(trans('passwords.reset'), null, 200)
+                    : redirect()->intended('/');
+            }
+        });
+
+        $this->app->instance(\Laravel\Fortify\Contracts\FailedPasswordResetResponse::class, new class implements \Laravel\Fortify\Contracts\FailedPasswordResetResponse {
+            public function toResponse($request)
+            {
+                return $request->wantsJson()
+                    ? Response::jsonResponseValidacionError(
+                        'Error de validación.',
+                        422,
+                        [
+                            'token' => [
+                                trans('passwords.token'),
+                            ],
+                        ]
+                    )
+                    : redirect()->intended('/');
+            }
+        });
     }
 
     /**
