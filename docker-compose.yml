@@ -1,0 +1,20 @@
+services:
+    template-laravel11-vue3-vuetify:
+        image: template-laravel11-vue3-vuetify:1.0.0
+        container_name: template-laravel11-vue3-vuetify
+        volumes:
+            - "/etc/localtime:/etc/localtime:ro"
+            - ".env.production:/var/www/.env"
+        ports:
+            - "8000:80"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.template-laravel11-vue3-vuetify.rule=Host(`${TRAEFIK_HTTP_ROUTERS_RULE_HOST}`)"
+            - "traefik.http.routers.template-laravel11-vue3-vuetify.entrypoints=websecure"
+            - "traefik.http.routers.template-laravel11-vue3-vuetify.tls.certresolver=myresolver"
+        networks:
+            - web
+
+networks:
+    web:
+        external: true

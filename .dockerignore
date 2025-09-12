@@ -1,0 +1,13 @@
+.env
+.env.*
+Dockerfile
+docker-compose.yml
+
+.git/
+bootstrap/cache/*
+storage/app/*
+storage/framework/cache/*
+storage/framework/views/*
+storage/logs/*
+vendor/
+node_modules/
